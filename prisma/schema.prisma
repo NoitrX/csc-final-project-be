@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model About {
+  id Int @id @default(autoincrement())
+  description String
+  vision String
+  mission String
+  img String?
+  title_img String
+}
+
+
+model Division {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title_division String 
+  description String @db.VarChar(255)
+  image_division String
+  detail_division String @db.VarChar(255)
+  image_detail String 
+  focus_area String?
+  link_silabus String?
+}
+
+model Event {
+   id Int @id @default(autoincrement())
+   img_event String
+   title_img String
+   description String
+}
+
+
+model Event_detail {
+     id Int @id @default(autoincrement())
+     event_id Int
+     url_img String
+     description_detail String
+}
+
+model Faq {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+}
+
+model Contact {
+  id Int @id @default(autoincrement())
+  title String
+  img String
+  url String
+}
+
+model Join_us {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  url String?
+}
