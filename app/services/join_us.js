@@ -1,21 +1,21 @@
 const { BadRequestError, UnauthorizedError } = require("../errors");
 const prisma = require("../db");
 
-const getAllEvent = async (req) => {
-  const result = await prisma.event.findMany();
+const getAllJoinUs = async (req) => {
+  const result = await prisma.join_us.findMany();
   return result;
 };
 
-const createEvent = async (req) => {
-  const { img_event, title_img, description } = req.body;
-  if (!img_event || !title_img || !description) {
+const createJoinUs = async (req) => {
+  const { title, description, url } = req.body;
+  if (!title || !description || !url) {
     throw new BadRequestError("All fields are required!!");
   }
-  const result = await prisma.event.create({
+  const result = await prisma.join_us.create({
     data: {
-      img_event,
-      title_img,
+      title,
       description,
+      url,
     },
   });
   if (!result) {
@@ -24,9 +24,9 @@ const createEvent = async (req) => {
   return result;
 };
 
-const detailEvent = async (req) => {
+const detailJoinUs = async (req) => {
   const id = parseInt(req.params.id);
-  const result = await prisma.event.findUnique({
+  const result = await prisma.join_us.findUnique({
     where: {
       id: id,
     },
@@ -34,20 +34,20 @@ const detailEvent = async (req) => {
   return result;
 };
 
-const updateEvent = async (req) => {
+const updateJoinUs = async (req) => {
   const id = parseInt(req.params.id);
-  const { img_event, title_img, description } = req.body;
-  if (!img_event || !title_img || !description) {
+  const { title, description, url } = req.body;
+  if (!title || !description || !url) {
     throw new BadRequestError("All fields are required!!");
   }
-  const result = await prisma.event.update({
+  const result = await prisma.join_us.update({
     where: {
       id: id,
     },
     data: {
-      img_event,
-      title_img,
+      title,
       description,
+      url,
     },
   });
 
@@ -58,9 +58,9 @@ const updateEvent = async (req) => {
   return result;
 };
 
-const deleteEvent = async (req) => {
+const deleteJoinUs = async (req) => {
   const id = parseInt(req.params.id);
-  const result = await prisma.event.delete({
+  const result = await prisma.join_us.delete({
     where: {
       id: id,
     },
@@ -72,4 +72,4 @@ const deleteEvent = async (req) => {
   return result;
 };
 
-module.exports = { getAllEvent, createEvent, detailEvent, updateEvent, deleteEvent };
+module.exports = { getAllJoinUs, createJoinUs, detailJoinUs, updateJoinUs, deleteJoinUs };

@@ -5,7 +5,7 @@ const { getAllA, createA, detailA, updateA, deleteA } = require("../../api/event
 router.get("/event", getAllA);
 router.get("/event/:id", detailA);
 router.post("/event", createA);
-router.put("/event/upcate/:id", updateA);
+router.put("/event/update/:id", updateA);
 router.delete("/event/delete/:id", deleteA);
 
 module.exports = router;

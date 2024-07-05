@@ -5,7 +5,7 @@ const { getAllA, createA, detailA, updateA, deleteA } = require("../../api/divis
 router.get("/division", getAllA);
 router.get("/division/:id", detailA);
 router.post("/division", createA);
-router.put("/division/upcate/:id", updateA);
+router.put("/division/update/:id", updateA);
 router.delete("/division/delete/:id", deleteA);
 
 module.exports = router;

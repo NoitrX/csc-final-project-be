@@ -1,20 +1,19 @@
 const { BadRequestError, UnauthorizedError } = require("../errors");
 const prisma = require("../db");
 
-const getAllEvent = async (req) => {
-  const result = await prisma.event.findMany();
+const getAllFaq = async (req) => {
+  const result = await prisma.faq.findMany();
   return result;
 };
 
-const createEvent = async (req) => {
-  const { img_event, title_img, description } = req.body;
-  if (!img_event || !title_img || !description) {
+const createFaq = async (req) => {
+  const { title, description } = req.body;
+  if (!title || !description) {
     throw new BadRequestError("All fields are required!!");
   }
-  const result = await prisma.event.create({
+  const result = await prisma.faq.create({
     data: {
-      img_event,
-      title_img,
+      title,
       description,
     },
   });
@@ -24,9 +23,9 @@ const createEvent = async (req) => {
   return result;
 };
 
-const detailEvent = async (req) => {
+const detailFaq = async (req) => {
   const id = parseInt(req.params.id);
-  const result = await prisma.event.findUnique({
+  const result = await prisma.faq.findUnique({
     where: {
       id: id,
     },
@@ -34,19 +33,18 @@ const detailEvent = async (req) => {
   return result;
 };
 
-const updateEvent = async (req) => {
+const updateFaq = async (req) => {
   const id = parseInt(req.params.id);
-  const { img_event, title_img, description } = req.body;
-  if (!img_event || !title_img || !description) {
+  const { title, description } = req.body;
+  if (!title || !description) {
     throw new BadRequestError("All fields are required!!");
   }
-  const result = await prisma.event.update({
+  const result = await prisma.faq.update({
     where: {
       id: id,
     },
     data: {
-      img_event,
-      title_img,
+      title,
       description,
     },
   });
@@ -58,9 +56,9 @@ const updateEvent = async (req) => {
   return result;
 };
 
-const deleteEvent = async (req) => {
+const deleteFaq = async (req) => {
   const id = parseInt(req.params.id);
-  const result = await prisma.event.delete({
+  const result = await prisma.faq.delete({
     where: {
       id: id,
     },
@@ -72,4 +70,4 @@ const deleteEvent = async (req) => {
   return result;
 };
 
-module.exports = { getAllEvent, createEvent, detailEvent, updateEvent, deleteEvent };
+module.exports = { getAllFaq, createFaq, detailFaq, updateFaq, deleteFaq };
