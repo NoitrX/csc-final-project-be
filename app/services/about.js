@@ -39,6 +39,9 @@ const detailAbout = async (req) => {
 const updateAbout = async (req) => {
   const id = parseInt(req.params.id);
   const { description, vision, mission, img, title_img } = req.body;
+  if (!description || !vision || !mission || !img || !title_img) {
+    throw new BadRequestError("All fields are required!!");
+  }
   const result = await prisma.about.update({
     where: {
       id: id,
@@ -51,10 +54,6 @@ const updateAbout = async (req) => {
       title_img,
     },
   });
-
-  if (!description || !vision || !mission || !img || !title_img) {
-    throw new BadRequestError("All fields are required!!");
-  }
 
   if (!result) {
     throw new BadRequestError("Edit Failed!");

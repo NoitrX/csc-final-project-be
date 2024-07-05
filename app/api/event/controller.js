@@ -1,10 +1,10 @@
 const { StatusCodes } = require("http-status-codes");
 
-const { getAllAbout, createAbout, detailAbout, updateAbout, deleteAbout } = require("../../services/about");
+const { getAllEvent, createEvent, detailEvent, updateEvent, deleteEvent } = require("../../services/event");
 
 const getAllA = async (req, res, next) => {
   try {
-    const result = await getAllAbout(req);
+    const result = await getAllEvent(req);
     res.status(StatusCodes.OK).json({ data: result });
   } catch (err) {
     next(err);
@@ -14,7 +14,7 @@ const getAllA = async (req, res, next) => {
 const createA = async (req, res, next) => {
   console.log(req.body, "req");
   try {
-    const result = await createAbout(req);
+    const result = await createEvent(req);
     res.status(StatusCodes.CREATED).json({ data: result });
   } catch (err) {
     next(err);
@@ -23,7 +23,7 @@ const createA = async (req, res, next) => {
 
 const detailA = async (req, res, next) => {
   try {
-    const result = await detailAbout(req);
+    const result = await detailEvent(req);
     res.status(StatusCodes.OK).json({ data: result });
   } catch (err) {
     next(err);
@@ -32,7 +32,7 @@ const detailA = async (req, res, next) => {
 
 const updateA = async (req, res, next) => {
   try {
-    const result = await updateAbout(req);
+    const result = await updateEvent(req);
     res.status(StatusCodes.CREATED).json({ data: result });
   } catch (err) {
     next(err);
@@ -41,7 +41,7 @@ const updateA = async (req, res, next) => {
 
 const deleteA = async (req, res, next) => {
   try {
-    const result = await deleteAbout(req);
+    const result = await deleteEvent(req);
     res.status(StatusCodes.CREATED).json({ data: result });
   } catch (err) {
     next(err);
