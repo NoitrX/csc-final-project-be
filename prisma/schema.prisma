@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+    id Int @id @default(autoincrement())
+    username String
+    password String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 model About {
   id Int @id @default(autoincrement())
   description String
@@ -20,6 +28,8 @@ model About {
   mission String
   img String?
   title_img String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 
@@ -41,6 +51,8 @@ model Event {
    img_event String
    title_img String
    description String
+   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 
@@ -55,6 +67,8 @@ model Faq {
   id Int @id @default(autoincrement())
   title String
   description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Contact {
@@ -62,6 +76,8 @@ model Contact {
   title String
   img String
   url String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Join_us {
@@ -69,4 +85,6 @@ model Join_us {
   title String
   description String
   url String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
