@@ -7,7 +7,9 @@ const getAllDivision = async (req) => {
 };
 
 const createDivision = async (req) => {
-  const { title_division, description, image_division, detail_division, image_detail, focus_area, link_silabus } = req.body;
+  const { title_division, description, detail_division, focus_area, link_silabus } = req.body;
+  const image_detail = req.files["image_detail"] ? req.files["image_detail"][0].path : null;
+  const image_division = req.files["image_division"] ? req.files["image_division"][0].path : null;
   if (!title_division || !description || !image_division || !detail_division || !image_detail) {
     throw new BadRequestError("All fields are required!!");
   }

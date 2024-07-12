@@ -53,7 +53,6 @@ model Event {
    description String
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
-
    eventDetails Event_detail[] @relation("EventToEventDetails")
 }
 

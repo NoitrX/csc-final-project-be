@@ -7,7 +7,9 @@ const getAllAbout = async (req) => {
 };
 
 const createAbout = async (req) => {
-  const { description, vision, mission, img, title_img } = req.body;
+  const { description, vision, mission } = req.body;
+  const img = req.files["img"] ? req.files["img"][0].path : null;
+  const title_img = req.files["title_img"] ? req.files["title_img"][0].path : null;
   if (!description || !vision || !mission || !img || !title_img) {
     throw new BadRequestError("All fields are required!!");
   }

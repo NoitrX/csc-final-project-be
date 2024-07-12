@@ -12,7 +12,8 @@ const getAllEventDetail = async (req) => {
 };
 
 const createEventDetail = async (req) => {
-  const { event_id, url_img, description_detail } = req.body;
+  const { event_id, description_detail } = req.body;
+  const url_img = req.files["url_img"] ? req.files["url_img"][0].path : null;
   if (!event_id || !url_img || !description_detail) {
     throw new BadRequestError("All fields are required!!");
   }

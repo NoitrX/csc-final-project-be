@@ -8,7 +8,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const v1 = "/api/csc";
-// const handlerErrorMiddleware = require("./app/middlewares/handler-error");
 
 // Router
 const aboutRouter = require("./app/api/about/router");
@@ -31,7 +30,7 @@ app.get("/", function (req, res) {
 
 // ROUTER
 app.use(v1, aboutRouter);
-app.use(v1, divisionRouter);
+app.use(v1, divisionRouter);  
 app.use(v1, eventRouter);
 app.use(v1, eventDetailRouter);
 app.use(v1, faqRouter);
