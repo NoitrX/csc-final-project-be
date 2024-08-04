@@ -1,5 +1,7 @@
 const { BadRequestError, UnauthorizedError } = require("../errors");
 const prisma = require("../db");
+const fs = require("fs");
+const path = require("path");
 
 const getAllAbout = async (req) => {
   const result = await prisma.about.findMany();
@@ -7,15 +9,13 @@ const getAllAbout = async (req) => {
 };
 
 const createAbout = async (req) => {
-  const { description, vision, mission } = req.body;
+  const { vision, mission, title_img } = req.body;
   const img = req.files["img"] ? req.files["img"][0].path : null;
-  const title_img = req.files["title_img"] ? req.files["title_img"][0].path : null;
-  if (!description || !vision || !mission || !img || !title_img) {
+  if (!vision || !mission || !img || !title_img) {
     throw new BadRequestError("All fields are required!!");
   }
   const result = await prisma.about.create({
     data: {
-      description,
       vision,
       mission,
       img,
@@ -39,31 +39,64 @@ const detailAbout = async (req) => {
 };
 
 const updateAbout = async (req) => {
-  const id = parseInt(req.params.id);
-  const { description, vision, mission, img, title_img } = req.body;
-  if (!description || !vision || !mission || !img || !title_img) {
-    throw new BadRequestError("All fields are required!!");
-  }
-  const result = await prisma.about.update({
-    where: {
-      id: id,
-    },
-    data: {
-      description,
-      vision,
-      mission,
-      img,
-      title_img,
-    },
-  });
+  try {
+    const id = parseInt(req.params.id);
+    const { vision, mission, title_img } = req.body;
 
-  if (!result) {
-    throw new BadRequestError("Edit Failed!");
+    if (!vision || !mission || !title_img) {
+      throw new BadRequestError("All fields are required!!");
+    }
+
+    const currentAbout = await prisma.about.findUnique({
+      where: { id: id },
+    });
+
+    if (!currentAbout) {
+      throw new BadRequestError("Record not found!!");
+    }
+
+    const img = req.files.img ? req.files.img[0].path : undefined;
+
+    if (img && currentAbout.img) {
+      // const oldImagePath = path.join(__dirname, "..", currentAbout.img);
+      const oldImagePath = path.join(__dirname, "..", "..", "public", "uploads", path.basename(currentAbout.img));
+      fs.unlink(oldImagePath, (err) => {
+        if (err) console.error(`Failed to delete old img: ${err.message}`);
+      });
+    }
+
+    const result = await prisma.about.update({
+      where: {
+        id: id,
+      },
+      data: {
+        vision,
+        mission,
+        img: img ? img.replace("public/", "uploads/") : currentAbout.img,
+        title_img,
+      },
+    });
+
+    if (!result) {
+      throw new BadRequestError("Edit Failed!");
+    }
+    return result;
+  } catch (error) {
+    throw error;
   }
 };
 
 const deleteAbout = async (req) => {
   const id = parseInt(req.params.id);
+  const currentAbout = await prisma.about.findUnique({
+    where: { id: id },
+  });
+  if (currentAbout.img) {
+    const oldImagePath = path.join(__dirname, "..", "..", "public", "uploads", path.basename(currentAbout.img));
+    fs.unlink(oldImagePath, (err) => {
+      if (err) console.error(`Failed to delete old img: ${err.message}`);
+    });
+  }
   const result = await prisma.about.delete({
     where: {
       id: id,

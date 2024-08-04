@@ -1,5 +1,7 @@
 const { BadRequestError, UnauthorizedError } = require("../errors");
 const prisma = require("../db");
+const fs = require("fs");
+const path = require("path");
 
 const getAllDivision = async (req) => {
   const result = await prisma.division.findMany();
@@ -7,10 +9,9 @@ const getAllDivision = async (req) => {
 };
 
 const createDivision = async (req) => {
-  const { title_division, description, detail_division, focus_area, link_silabus } = req.body;
-  const image_detail = req.files["image_detail"] ? req.files["image_detail"][0].path : null;
+  const { title_division, description, focus_area, link_silabus } = req.body;
   const image_division = req.files["image_division"] ? req.files["image_division"][0].path : null;
-  if (!title_division || !description || !image_division || !detail_division || !image_detail) {
+  if (!title_division || !description || !image_division) {
     throw new BadRequestError("All fields are required!!");
   }
   const result = await prisma.division.create({
@@ -18,8 +19,6 @@ const createDivision = async (req) => {
       title_division,
       description,
       image_division,
-      detail_division,
-      image_detail,
       focus_area,
       link_silabus,
     },
@@ -32,7 +31,7 @@ const createDivision = async (req) => {
 
 const detailDivision = async (req) => {
   const id = parseInt(req.params.id);
-  const result = await prisma.divison.findUnique({
+  const result = await prisma.division.findUnique({
     where: {
       id: id,
     },
@@ -42,20 +41,33 @@ const detailDivision = async (req) => {
 
 const updateDivision = async (req) => {
   const id = parseInt(req.params.id);
-  const { title_division, description, image_division, detail_division, image_detail, focus_area, link_silabus } = req.body;
-  if (!title_division || !description || !image_division || !detail_division || !image_detail) {
+  const { title_division, description, focus_area, link_silabus } = req.body;
+  if (!title_division || !description || !focus_area) {
     throw new BadRequestError("All fields are required!!");
   }
-  const result = await prisma.divison.update({
+
+  const currentDivision = await prisma.division.findUnique({
+    where: { id: id },
+  });
+  console.log(req.files, "REQ FILES");
+  console.log(currentDivision, "Current Division");
+
+  const img = req.files.image_division ? req.files.image_division[0].path : undefined;
+
+  if (img && currentDivision.image_division) {
+    const oldImagePath = path.join(__dirname, "..", "..", "public", "uploads", path.basename(currentDivision.image_division));
+    fs.unlink(oldImagePath, (err) => {
+      if (err) console.error(`Failed to delete old img: ${err.message}`);
+    });
+  }
+  const result = await prisma.division.update({
     where: {
       id: id,
     },
     data: {
       title_division,
       description,
-      image_division,
-      detail_division,
-      image_detail,
+      image_division: img ? img.replace("public/", "uploads/") : currentDivision.image_division,
       focus_area,
       link_silabus,
     },
@@ -68,6 +80,15 @@ const updateDivision = async (req) => {
 
 const deleteDivision = async (req) => {
   const id = parseInt(req.params.id);
+  const currentDivision = await prisma.division.findUnique({
+    where: { id: id },
+  });
+  if (currentDivision.image_division) {
+    const oldImagePath = path.join(__dirname, "..", "..", "public", "uploads", path.basename(currentDivision.image_division));
+    fs.unlink(oldImagePath, (err) => {
+      if (err) console.error(`Failed to delete old img: ${err.message}`);
+    });
+  }
   const result = await prisma.division.delete({
     where: {
       id: id,

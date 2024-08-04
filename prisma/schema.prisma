@@ -23,9 +23,8 @@ model User {
 
 model About {
   id Int @id @default(autoincrement())
-  description String
-  vision String
-  mission String
+  vision String @db.VarChar(300)
+  mission String @db.VarChar(300)
   img String?
   title_img String
   createdAt DateTime @default(now())
@@ -38,10 +37,8 @@ model Division {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title_division String 
-  description String @db.VarChar(255)
+  description String @db.VarChar(1000)
   image_division String
-  detail_division String @db.VarChar(255)
-  image_detail String 
   focus_area String?
   link_silabus String?
 }
