@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
-const { getAllContact, createContact, detailContact, updateContact, deleteContact } = require("../../services/contact");
+const { getAllContact, createContact, updateContact, deleteContact } = require("../../services/contact");
 
 const getAllA = async (req, res, next) => {
   try {
@@ -42,7 +42,6 @@ const deleteA = async (req, res, next) => {
 module.exports = {
   getAllA,
   createA,
-  detailA,
   updateA,
   deleteA,
 };
