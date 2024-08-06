@@ -6,7 +6,7 @@ const upload = require("../../middlewares/multer");
 router.get("/event", getAllA);
 router.get("/event/:id", detailA);
 router.post("/event", upload.fields([{ name: "img_event", maxCount: 1 }]), createA);
-router.put("/event/update/:id", updateA);
+router.put("/event/update/:id", upload.fields([{ name: "img_event", maxCount: 1 }]), updateA);
 router.delete("/event/delete/:id", deleteA);
 
 module.exports = router;

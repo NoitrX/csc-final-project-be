@@ -1,5 +1,7 @@
 const { BadRequestError, UnauthorizedError } = require("../errors");
 const prisma = require("../db");
+const fs = require("fs");
+const path = require("path");
 
 const getAllEvent = async (req) => {
   const result = await prisma.event.findMany();
@@ -7,7 +9,7 @@ const getAllEvent = async (req) => {
 };
 
 const createEvent = async (req) => {
-  const { title_img, description } = req.body;
+  const { title_img, description, dateEvent } = req.body;
   const img_event = req.files["img_event"] ? req.files["img_event"][0].path : null;
   if (!img_event || !title_img || !description) {
     throw new BadRequestError("All fields are required!!");
@@ -17,6 +19,7 @@ const createEvent = async (req) => {
       img_event,
       title_img,
       description,
+      dateEvent: new Date(dateEvent).toISOString(),
     },
   });
   if (!result) {
@@ -37,18 +40,31 @@ const detailEvent = async (req) => {
 
 const updateEvent = async (req) => {
   const id = parseInt(req.params.id);
-  const { img_event, title_img, description } = req.body;
-  if (!img_event || !title_img || !description) {
+  const { title_img, description, dateEvent } = req.body;
+  if (!title_img || !description) {
     throw new BadRequestError("All fields are required!!");
+  }
+
+  const currentEvent = await prisma.event.findUnique({
+    where: { id: id },
+  });
+
+  const img = req.files.img_event ? req.files.img_event[0].path : undefined;
+  if (img && currentEvent.img_event) {
+    const oldImagePath = path.join(__dirname, "..", "..", "public", "uploads", path.basename(currentEvent.img_event));
+    fs.unlink(oldImagePath, (err) => {
+      if (err) console.error(`Failed to delete old img: ${err.message}`);
+    });
   }
   const result = await prisma.event.update({
     where: {
       id: id,
     },
     data: {
-      img_event,
+      img_event: img ? img.replace("public/", "uploads/") : currentEvent.img_event,
       title_img,
       description,
+      dateEvent: new Date(dateEvent).toISOString(),
     },
   });
 

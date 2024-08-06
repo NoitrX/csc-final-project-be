@@ -49,8 +49,6 @@ const updateDivision = async (req) => {
   const currentDivision = await prisma.division.findUnique({
     where: { id: id },
   });
-  console.log(req.files, "REQ FILES");
-  console.log(currentDivision, "Current Division");
 
   const img = req.files.image_division ? req.files.image_division[0].path : undefined;
 

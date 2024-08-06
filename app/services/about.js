@@ -9,15 +9,14 @@ const getAllAbout = async (req) => {
 };
 
 const createAbout = async (req) => {
-  const { vision, mission, title_img } = req.body;
+  const { headerImage, title_img } = req.body;
   const img = req.files["img"] ? req.files["img"][0].path : null;
-  if (!vision || !mission || !img || !title_img) {
+  if (!headerImage || !title_img) {
     throw new BadRequestError("All fields are required!!");
   }
   const result = await prisma.about.create({
     data: {
-      vision,
-      mission,
+      headerImage,
       img,
       title_img,
     },
@@ -41,9 +40,9 @@ const detailAbout = async (req) => {
 const updateAbout = async (req) => {
   try {
     const id = parseInt(req.params.id);
-    const { vision, mission, title_img } = req.body;
+    const { headerImage, title_img } = req.body;
 
-    if (!vision || !mission || !title_img) {
+    if (!headerImage || !title_img) {
       throw new BadRequestError("All fields are required!!");
     }
 
@@ -70,8 +69,7 @@ const updateAbout = async (req) => {
         id: id,
       },
       data: {
-        vision,
-        mission,
+        headerImage,
         img: img ? img.replace("public/", "uploads/") : currentAbout.img,
         title_img,
       },

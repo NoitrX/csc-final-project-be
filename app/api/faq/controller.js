@@ -12,7 +12,6 @@ const getAllA = async (req, res, next) => {
 };
 
 const createA = async (req, res, next) => {
-  console.log(req.body, "req");
   try {
     const result = await createFaq(req);
     res.status(StatusCodes.CREATED).json({ data: result });

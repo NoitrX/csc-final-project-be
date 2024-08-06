@@ -23,8 +23,7 @@ model User {
 
 model About {
   id Int @id @default(autoincrement())
-  vision String @db.VarChar(300)
-  mission String @db.VarChar(300)
+  headerImage String
   img String?
   title_img String
   createdAt DateTime @default(now())
@@ -48,6 +47,7 @@ model Event {
    img_event String
    title_img String
    description String
+   dateEvent DateTime
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
    eventDetails Event_detail[] @relation("EventToEventDetails")
@@ -65,7 +65,7 @@ model Event_detail {
 model Faq {
   id Int @id @default(autoincrement())
   title String
-  description String
+  description String @db.VarChar(500)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

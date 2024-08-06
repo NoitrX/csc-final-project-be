@@ -9,12 +9,12 @@ const getAllFaq = async (req) => {
 const createFaq = async (req) => {
   const { title, description } = req.body;
   if (!title || !description) {
-    throw new BadRequestError("All fields are required!!");
+    throw new BadRequestError("All Fields Required!");
   }
   const result = await prisma.faq.create({
     data: {
-      title,
-      description,
+      title: title,
+      description: description,
     },
   });
   if (!result) {
