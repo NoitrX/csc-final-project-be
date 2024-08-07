@@ -50,17 +50,17 @@ model Event {
    dateEvent DateTime
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
-   eventDetails Event_detail[] @relation("EventToEventDetails")
+  //  eventDetails Event_detail[] @relation("EventToEventDetails")
 }
 
-model Event_detail {
-   id Int @id @default(autoincrement())
-   event_id Int
-   url_img String
-   description_detail String
+// model Event_detail {
+//    id Int @id @default(autoincrement())
+//    event_id Int
+//    url_img String
+//    description_detail String
 
-   event Event @relation(fields: [event_id], references: [id], name: "EventToEventDetails")
-}
+//    event Event @relation(fields: [event_id], references: [id], name: "EventToEventDetails")
+// }
 
 model Faq {
   id Int @id @default(autoincrement())
