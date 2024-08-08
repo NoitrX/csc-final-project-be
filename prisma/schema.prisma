@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model user {
     id Int @id @default(autoincrement())
     username String
     password String
@@ -21,7 +21,7 @@ model User {
     updatedAt DateTime @updatedAt
 }
 
-model About {
+model about {
   id Int @id @default(autoincrement())
   headerImage String
   img String?
@@ -31,7 +31,7 @@ model About {
 }
 
 
-model Division {
+model division {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,7 +42,7 @@ model Division {
   link_silabus String?
 }
 
-model Event {
+model event {
    id Int @id @default(autoincrement())
    img_event String
    title_img String
@@ -53,7 +53,7 @@ model Event {
   //  eventDetails Event_detail[] @relation("EventToEventDetails")
 }
 
-// model Event_detail {
+// model event_detail {
 //    id Int @id @default(autoincrement())
 //    event_id Int
 //    url_img String
@@ -62,7 +62,7 @@ model Event {
 //    event Event @relation(fields: [event_id], references: [id], name: "EventToEventDetails")
 // }
 
-model Faq {
+model faq {
   id Int @id @default(autoincrement())
   title String
   description String @db.VarChar(500)
@@ -70,7 +70,7 @@ model Faq {
   updatedAt DateTime @updatedAt
 }
 
-model Contact {
+model contact {
   id Int @id @default(autoincrement())
   title String
   img String
@@ -79,7 +79,7 @@ model Contact {
   updatedAt DateTime @updatedAt
 }
 
-model Join_us {
+model join_us {
   id Int @id @default(autoincrement())
   title String
   description String
